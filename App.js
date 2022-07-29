@@ -1,20 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import Home from "./components/Home";
+import { UserContext } from "./context/user-context";
 
 export default function App() {
+  const [user, setUser] = useState({
+    name: "Samet Sevindik",
+    today: 0, // seconds
+    history: [
+      // ex: { date: 1020834403, time: 2000 (seconds) }
+    ],
+    work: 3000,
+    break: 600,
+    current: "work"
+  });
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <UserContext.Provider value={{ user, setUser }}>
+      <Home />
+    </UserContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
