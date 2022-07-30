@@ -13,11 +13,14 @@ export default class Home extends React.Component {
 
     this.state = {
       imageHash: Date.now(),
-      pomodoroStatus: PomodoroStatus.stopped
+      pomodoroStatus: PomodoroStatus.stopped,
+      passingTime: 0,
+      countdownKey: 0
     };
 
     this.onRandPress = this.onRandPress.bind(this);
     this.onBtnPress = this.onBtnPress.bind(this);
+    this.onComplete = this.onComplete.bind(this);
   }
 
   onDashboardPress() {
@@ -29,9 +32,43 @@ export default class Home extends React.Component {
     });
   }
 
+  onComplete(totalElapsedTime) {
+    let history = this.context.user.history;
+    if (this.context.user.current === "work")
+      history = [...this.context.user.history, { date: Date.now(), time: totalElapsedTime }];
+  
+    this.setState({
+      pomodoroStatus: PomodoroStatus.stopped,
+      passingTime: 0,
+      countdownKey: this.state.countdownKey + 1
+    });
+    this.context.dispatch({
+      type: 'POMODORO_STOP',
+      payload: {
+        current: this.context.user.current === "work" ? "break" : "work",
+        history: history
+      }
+    });
+  }
+
   onBtnPress(process) {
-    if (process === PomodoroProcess.start) {
-      //TODO handle button
+    switch (process) {
+      case PomodoroProcess.start:
+        if (this.context.user.current === "work")
+          this.setState({ pomodoroStatus: PomodoroStatus.work });
+        else this.setState({ pomodoroStatus: PomodoroStatus.break });
+        break;
+      case PomodoroProcess.pause:
+        this.setState({ pomodoroStatus: PomodoroStatus.paused });
+        break;
+      case PomodoroProcess.stop:
+        this.onComplete(this.state.passingTime);
+        break;
+      case PomodoroProcess.resume:
+        if (this.context.user.current === "work")
+          this.setState({ pomodoroStatus: PomodoroStatus.work });
+        else this.setState({ pomodoroStatus: PomodoroStatus.break });
+        break;
     }
   }
 
@@ -44,12 +81,30 @@ export default class Home extends React.Component {
         />
         <View style={styles.content}>
           <CountdownCircleTimer
-            isPlaying={true}
-            duration={7}
+            key={this.state.countdownKey}
+            isPlaying={
+              this.state.pomodoroStatus === PomodoroStatus.work || this.state.pomodoroStatus === PomodoroStatus.break
+                ? true : false
+            }
+            duration={this.context.user.current === "work" ? this.context.user.work : this.context.user.break}
             colors={['#004777']}
-            colorsTime={[7]}
+            onComplete={this.onComplete}
+            onUpdate={() => this.setState({ passingTime: this.state.passingTime + 1 })}
           >
-            {({ remainingTime }) => <Text style={styles.remaining}>{remainingTime}</Text>}
+            {({ remainingTime }) => {
+              let minutes = Math.floor(remainingTime / 60).toString();
+              let seconds = (remainingTime % 60).toString();
+
+              if (minutes.length === 1)
+                minutes = '0' + minutes;
+              if (seconds.length === 1)
+                seconds = '0' + seconds;
+
+              return <>
+                <Text style={styles.remaining}>{`${minutes}:${seconds}`}</Text>
+                <Text style={styles.info}>{this.context.user.current}</Text>
+              </>;
+            }}
           </CountdownCircleTimer>
           {(() => {
             if (this.state.pomodoroStatus === PomodoroStatus.stopped)
@@ -94,6 +149,13 @@ const styles = StyleSheet.create({
 
   remaining: {
     fontSize: 26
+  },
+
+  info: {
+    top: 30,
+    fontSize: 18,
+    fontWeight: "300",
+    color: '#404040'
   }
 });
 
