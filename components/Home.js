@@ -4,6 +4,7 @@ import { UserContext } from "../context/user-context";
 import Navbar from "./Navbar";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import Button from "./Button";
+import Dashboard from "./Dashboard";
 
 export default class Home extends React.Component {
   static contextType = UserContext
@@ -15,15 +16,20 @@ export default class Home extends React.Component {
       imageHash: Date.now(),
       pomodoroStatus: PomodoroStatus.stopped,
       passingTime: 0,
-      countdownKey: 0
+      countdownKey: 0,
+      dashboardVisibility: false
     };
 
     this.onRandPress = this.onRandPress.bind(this);
     this.onBtnPress = this.onBtnPress.bind(this);
     this.onComplete = this.onComplete.bind(this);
+    this.onDashboardPress = this.onDashboardPress.bind(this);
   }
 
   onDashboardPress() {
+    this.setState({
+      dashboardVisibility: true
+    });
   }
 
   onRandPress() {
@@ -119,6 +125,10 @@ export default class Home extends React.Component {
             } else return <Button text={"Pause"} onPress={() => this.onBtnPress(PomodoroProcess.pause)} />
           })()}
         </View>
+        <Dashboard 
+          visible={this.state.dashboardVisibility} 
+          setVisible={visible => this.setState({ dashboardVisibility: visible })} 
+        />
         <Image
           source={{ uri: `https://picsum.photos/${Dimensions.get('window').width}/${Dimensions.get('window').height}?${this.state.imageHash}` }}
           style={styles.background}
@@ -152,10 +162,11 @@ const styles = StyleSheet.create({
   },
 
   info: {
-    top: 30,
+    bottom: 30,
     fontSize: 18,
     fontWeight: "300",
-    color: '#404040'
+    color: '#404040',
+    position: 'absolute'
   }
 });
 
