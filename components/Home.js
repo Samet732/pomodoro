@@ -87,6 +87,7 @@ export default class Home extends React.Component {
         />
         <View style={styles.content}>
           <CountdownCircleTimer
+          size={225}
             key={this.state.countdownKey}
             isPlaying={
               this.state.pomodoroStatus === PomodoroStatus.work || this.state.pomodoroStatus === PomodoroStatus.break

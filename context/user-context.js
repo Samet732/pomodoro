@@ -13,9 +13,18 @@ const reducer = (state, action) => {
 
 const initialState = {
   name: "Samet Sevindik",
-  today: 0, // seconds
   history: [
     // ex: { date: 1020834403, time: 2000 (seconds) }
+    { date: new Date(2021, 6, 27).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 24).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 25).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 26).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 27).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 28).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 29).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 30).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 31).getTime(), time: 3000 },
+    { date: new Date(2022, 6, 31).getTime(), time: 6000 }
   ],
   work: 3000,
   break: 600,
