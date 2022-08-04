@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { Dimensions, Modal, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { UserContext } from "../context/user-context";
-import { getLastWeekFocusTime, getTotalFocusTime, getTodayFocusTime } from "../tools/calculate-focus-time";
+import { getLastWeekTotalFocusTime, getTotalFocusTime, getTodayTotalFocusTime } from "../tools/calculate-focus-time";
+import HistoryChart from "./HistoryChart";
 
 export default function Dashboard({ visible, setVisible }) {
   const { user } = useContext(UserContext);
@@ -31,17 +32,18 @@ export default function Dashboard({ visible, setVisible }) {
           <View style={styles.focusTime}>
             <View style={styles.block}>
               <Text>Total Focus Time</Text>
-              <Text  style={styles.hour}>{getTotalFocusTime(user.history)}</Text>
+              <Text style={styles.hour}>{getTotalFocusTime(user.history)}</Text>
             </View>
             <View style={styles.block}>
               <Text>This Week</Text>
-              <Text style={styles.hour}>{getLastWeekFocusTime(user.history)}</Text>
+              <Text style={styles.hour}>{getLastWeekTotalFocusTime(user.history)}</Text>
             </View>
             <View style={styles.block}>
               <Text>Today</Text>
-              <Text style={styles.hour}>{getTodayFocusTime(user.history)}</Text>
+              <Text style={styles.hour}>{getTodayTotalFocusTime(user.history)}</Text>
             </View>
           </View>
+          <HistoryChart history={user.history} />
         </ScrollView>
       </SafeAreaView>
     </Modal>
@@ -77,13 +79,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: Dimensions.get('window').width - 20,
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     marginTop: 10,
     paddingVertical: 20,
     backgroundColor: '#fff',
     borderRadius: 5
   },
-
   block: {
     justifyContent: 'center',
     alignItems: 'center'

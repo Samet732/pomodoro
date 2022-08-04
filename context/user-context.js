@@ -22,9 +22,13 @@ const initialState = {
     { date: new Date(2022, 6, 27).getTime(), time: 3000 },
     { date: new Date(2022, 6, 28).getTime(), time: 3000 },
     { date: new Date(2022, 6, 29).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 30).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 31).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 31).getTime(), time: 6000 }
+    { date: new Date(2022, 7, 1).getTime(), time: 3000 },
+    { date: new Date(2022, 7, 2).getTime(), time: 3000 },
+    { date: new Date(2022, 7, 2).getTime(), time: 6000 },
+    { date: new Date(2022, 7, 3).getTime(), time: 3000 },
+    { date: new Date(2022, 7, 3).getTime(), time: 6000 },
+    { date: new Date(2022, 7, 4).getTime(), time: 3000 },
+    { date: new Date(2022, 7, 4).getTime(), time: 6000 }
   ],
   work: 3000,
   break: 600,

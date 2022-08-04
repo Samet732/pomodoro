@@ -17,7 +17,8 @@ export default class Home extends React.Component {
       pomodoroStatus: PomodoroStatus.stopped,
       passingTime: 0,
       countdownKey: 0,
-      dashboardVisibility: false
+      dashboardVisibility: false,
+      dashboardKey: 0
     };
 
     this.onRandPress = this.onRandPress.bind(this);
@@ -46,7 +47,8 @@ export default class Home extends React.Component {
     this.setState({
       pomodoroStatus: PomodoroStatus.stopped,
       passingTime: 0,
-      countdownKey: this.state.countdownKey + 1
+      countdownKey: this.state.countdownKey + 1,
+      dashboardKey: this.state.dashboardKey + 1
     });
     this.context.dispatch({
       type: 'POMODORO_STOP',
@@ -127,6 +129,7 @@ export default class Home extends React.Component {
           })()}
         </View>
         <Dashboard 
+          key={this.state.dashboardKey}
           visible={this.state.dashboardVisibility} 
           setVisible={visible => this.setState({ dashboardVisibility: visible })} 
         />
