@@ -1,14 +1,18 @@
 import React, { useContext } from "react";
 import { Dimensions, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { UserContext } from "../context/user-context";
+import SettingsIcon from './../assets/settings-icon.png';
 
-export default function Navbar({ onDashboardPress, onRandPress }) {
+export default function Navbar({ onSettingPress, onDashboardPress, onRandPress }) {
   const { user } = useContext(UserContext);
 
   return (
     <View style={styles.navbar}>
       <Text style={styles.name}>{user.name}</Text>
       <View style={styles.group}>
+        <TouchableOpacity onPress={onSettingPress}>
+          <Image style={styles.button} source={SettingsIcon} />
+        </TouchableOpacity>
         <TouchableOpacity onPress={onDashboardPress}>
           <Image style={styles.button} source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2329/2329087.png' }} />
         </TouchableOpacity>
@@ -27,12 +31,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingTop: 10
+    paddingTop: 10,
   },
 
   name: {
     fontSize: 20,
-    flex: 10
+    flex: 9
   },
 
   button: {
@@ -41,8 +45,8 @@ const styles = StyleSheet.create({
   },
 
   group: {
-    flex: 2,
+    flex: 3,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   }
 });

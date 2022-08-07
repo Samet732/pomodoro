@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import Button from "./Button";
 import Dashboard from "./Dashboard";
+import Settings from "./Settings";
 
 export default class Home extends React.Component {
   static contextType = UserContext
@@ -18,13 +19,15 @@ export default class Home extends React.Component {
       passingTime: 0,
       countdownKey: 0,
       dashboardVisibility: false,
-      dashboardKey: 0
+      dashboardKey: 0,
+      settingsVisibility: false,
     };
 
     this.onRandPress = this.onRandPress.bind(this);
     this.onBtnPress = this.onBtnPress.bind(this);
     this.onComplete = this.onComplete.bind(this);
     this.onDashboardPress = this.onDashboardPress.bind(this);
+    this.onSettingPress = this.onSettingPress.bind(this);
   }
 
   onDashboardPress() {
@@ -36,6 +39,12 @@ export default class Home extends React.Component {
   onRandPress() {
     this.setState({
       imageHash: Date.now(),
+    });
+  }
+
+  onSettingPress() {
+    this.setState({
+      settingsVisibility: true
     });
   }
 
@@ -84,6 +93,7 @@ export default class Home extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <Navbar
+          onSettingPress={this.onSettingPress}
           onDashboardPress={this.onDashboardPress}
           onRandPress={this.onRandPress}
         />
@@ -132,6 +142,10 @@ export default class Home extends React.Component {
           key={this.state.dashboardKey}
           visible={this.state.dashboardVisibility} 
           setVisible={visible => this.setState({ dashboardVisibility: visible })} 
+        />
+        <Settings
+          visible={this.state.settingsVisibility}
+          setVisible={visible => this.setState({ settingsVisibility: visible })}
         />
         <Image
           source={{ uri: `https://picsum.photos/${Dimensions.get('window').width}/${Dimensions.get('window').height}?${this.state.imageHash}` }}
