@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, Image, SafeAreaView, StyleSheet, View, Text } from "react-native";
+import { Dimensions, Image, SafeAreaView, StyleSheet, View, Text, ImageEditor } from "react-native";
 import { UserContext } from "../context/user-context";
 import Navbar from "./Navbar";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
@@ -90,6 +90,12 @@ export default class Home extends React.Component {
   }
 
   render() {
+    // setting up background width and height
+    const wh = Dimensions.get('window').height;
+    const ww = Dimensions.get('window').width;
+    const scale = Math.round(wh / ww);
+    const height = parseInt(wh.toString()[0]) * Math.pow(10, wh.toString().length - 1);
+
     return (
       <SafeAreaView style={styles.container}>
         <Navbar
@@ -148,7 +154,7 @@ export default class Home extends React.Component {
           setVisible={visible => this.setState({ settingsVisibility: visible })}
         />
         <Image
-          source={{ uri: `https://picsum.photos/${Dimensions.get('window').width}/${Dimensions.get('window').height}?${this.state.imageHash}` }}
+          source={{ uri: `https://picsum.photos/${height / scale}/${height}?${this.state.imageHash}` }}
           style={styles.background}
         />
       </SafeAreaView>
@@ -158,7 +164,9 @@ export default class Home extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   background: {
@@ -172,7 +180,8 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    position: 'absolute',
   },
 
   remaining: {

@@ -1,4 +1,6 @@
-import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { isValidElement } from 'react';
 import {
   Modal,
   Image,
@@ -12,18 +14,28 @@ import {
   FlatList
 } from 'react-native';
 
-export default class Settings extends React.Component {
+class Settings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderItem = this.renderItem.bind(this);
+    this.onItemPress = this.onItemPress.bind(this);
+  }
+
+  onItemPress(title) {
+    this.props.navigation.navigate(title);
+  }
+
   renderItem({ item }) {
     if (item.title === '__SEPARATOR__') {
       return (
-        <View style={{ backgroundColor: '#fff' }}>
+        <View key={item.id} style={{ backgroundColor: '#fff' }}>
           <View style={styles.separator}></View>
         </View>
       );
     }
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity key={item.title} onPress={() => this.onItemPress(item.title)}>
         <View style={styles.item}>
           <Image style={styles.itemIcon} source={item.icon} />
           <Text style={styles.itemTitle}>{item.title}</Text>
@@ -37,14 +49,14 @@ export default class Settings extends React.Component {
       {
         id: 0,
         title: 'Account',
-        icon: { uri: 'https://cdn-icons.flaticon.com/png/512/3033/premium/3033143.png?token=exp=1659912643~hmac=9c0b605d537a3a5eae65560e42d5b268' }
+        icon: { uri: 'https://cdn-icons-png.flaticon.com/512/3033/3033143.png' }
       },
       {
-        id: 1,
+        id: -1,
         title: '__SEPARATOR__'
       },
       {
-        id: 2,
+        id: 1,
         title: 'Pomodoro',
         icon: { uri: 'https://cdn-icons-png.flaticon.com/512/7152/7152804.png' }
       }
@@ -128,3 +140,32 @@ const styles = StyleSheet.create({
     opacity: 0.1
   }
 });
+
+export default function SettingsNavigator({ visible, setVisible }) {
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator 
+        screenOptions={{ 
+          headerShown: false, 
+          contentStyle: visible ? { position: 'relative', display: 'flex' } : { position: 'absolute', display: 'none' } 
+        }} 
+        initialRouteName="Settings">
+
+        <Stack.Screen name="Settings">
+          {({ navigation }) => <Settings visible={visible} setVisible={setVisible} navigation={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen name="Account">
+          {() => <Account />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+function Account() {
+  return (
+    <View style={{ backgroundColor: '#fff', flex: 1 }}></View>
+  );
+}
