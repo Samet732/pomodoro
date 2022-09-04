@@ -1,14 +1,14 @@
 import React from "react";
-import { Dimensions, Image, SafeAreaView, StyleSheet, View, Text, ImageEditor } from "react-native";
+import { Dimensions, Image, SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { UserContext } from "../context/user-context";
-import Navbar from "./Navbar";
+import Navbar from "./Home/Navbar";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import Button from "./Button";
 import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 
 export default class Home extends React.Component {
-  static contextType = UserContext
+  static contextType = UserContext;
 
   constructor() {
     super();

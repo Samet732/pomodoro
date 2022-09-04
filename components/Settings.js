@@ -1,28 +1,41 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { isValidElement } from 'react';
+import React from 'react';
 import {
   Modal,
   Image,
-  SafeAreaView, 
-  StyleSheet, 
-  View, 
-  StatusBar, 
-  TouchableOpacity, 
-  Text, 
-  Dimensions, 
+  SafeAreaView,
+  StyleSheet,
+  View,
+  StatusBar,
+  TouchableOpacity,
+  Text,
+  Dimensions,
   FlatList
 } from 'react-native';
+import Account from './Settings/Account';
 
-class Settings extends React.Component {
+export default class Settings extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      currentPage: 'Settings'
+    };
+
     this.renderItem = this.renderItem.bind(this);
     this.onItemPress = this.onItemPress.bind(this);
+    this.onBackPress = this.onBackPress.bind(this);
+  }
+
+  onBackPress() {
+    if (this.state.currentPage === 'Settings')
+      this.props.setVisible(false);
+    else this.setState({ currentPage: 'Settings' });
   }
 
   onItemPress(title) {
-    this.props.navigation.navigate(title);
+    this.setState({
+      currentPage: title
+    });
   }
 
   renderItem({ item }) {
@@ -72,19 +85,30 @@ class Settings extends React.Component {
           <StatusBar backgroundColor={"#fff"} hidden={false} barStyle={"dark-content"} />
           <View style={styles.navbar}>
             <View>
-              <TouchableOpacity onPress={() => this.props.setVisible(false)}>
-                <Text style={styles.close}>X</Text>
+              <TouchableOpacity onPress={this.onBackPress}>
+                <Text style={styles.close}>
+                  { this.state.currentPage === 'Settings' ? 'X' : '<' }
+                </Text>
               </TouchableOpacity>
             </View>
-            <View><Text style={styles.title}>Settings</Text></View>
-            <View></View>
+            <View><Text style={styles.title}>{this.state.currentPage}</Text></View>
+            <View><Text style={styles.close}>   </Text></View>
           </View>
-          <FlatList
-            style={{ flex: 1, backgroundColor: '#e6e6e6', paddingTop: 20 }}
-            data={data}
-            renderItem={this.renderItem}
-            keyExtractor={item => item.id}
-          />
+          {(() => {
+            if (this.state.currentPage === 'Settings') {
+              return (
+              <FlatList
+                  style={{ flex: 1, backgroundColor: '#e6e6e6', paddingTop: 20 }}
+                  data={data}
+                  renderItem={this.renderItem}
+                  keyExtractor={item => item.id}
+                />);
+            } else if (this.state.currentPage === 'Account') {
+              return (
+                <Account/>
+              );
+            }
+          })()}
         </SafeAreaView>
       </Modal>
     );
@@ -109,8 +133,8 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: '#8c8c8c',
     transform: [
-      { scaleX: 1.1 },
-      { scaleY: 0.9 }
+      { scaleX: 1 },
+      { scaleY: 0.9}
     ],
   },
   title: {
@@ -139,33 +163,4 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1a1a1a',
     opacity: 0.1
   }
-});
-
-export default function SettingsNavigator({ visible, setVisible }) {
-  const Stack = createNativeStackNavigator();
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false, 
-          contentStyle: visible ? { position: 'relative', display: 'flex' } : { position: 'absolute', display: 'none' } 
-        }} 
-        initialRouteName="Settings">
-
-        <Stack.Screen name="Settings">
-          {({ navigation }) => <Settings visible={visible} setVisible={setVisible} navigation={navigation} />}
-        </Stack.Screen>
-        <Stack.Screen name="Account">
-          {() => <Account />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-function Account() {
-  return (
-    <View style={{ backgroundColor: '#fff', flex: 1 }}></View>
-  );
-}
+})

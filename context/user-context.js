@@ -7,12 +7,18 @@ const reducer = (state, action) => {
     case 'POMODORO_STOP':
       state.current = action.payload.current;
       state.history = action.payload.history;
-      return { ...state };
+      break;
+
+    case 'ACCOUNT_UPDATE':
+      state.nickname = action.payload.nickname;
+      break; 
   }
+
+  return { ...state };
 };
 
 const initialState = {
-  name: "Samet Sevindik",
+  nickname: "Samet Sevindik",
   history: [
     // ex: { date: 1020834403, time: 2000 (seconds) }
     { date: new Date(2021, 6, 27).getTime(), time: 3000 },
