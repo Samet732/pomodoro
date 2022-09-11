@@ -11,7 +11,12 @@ const reducer = (state, action) => {
 
     case 'ACCOUNT_UPDATE':
       state.nickname = action.payload.nickname;
-      break; 
+      break;
+      
+    case 'POMODORO_UPDATE':
+      state.work = action.payload.work;
+      state.break = action.payload.break;
+      break;
   }
 
   return { ...state };
@@ -21,23 +26,9 @@ const initialState = {
   nickname: "Samet Sevindik",
   history: [
     // ex: { date: 1020834403, time: 2000 (seconds) }
-    { date: new Date(2021, 6, 27).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 24).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 25).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 26).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 27).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 28).getTime(), time: 3000 },
-    { date: new Date(2022, 6, 29).getTime(), time: 3000 },
-    { date: new Date(2022, 7, 1).getTime(), time: 3000 },
-    { date: new Date(2022, 7, 2).getTime(), time: 3000 },
-    { date: new Date(2022, 7, 2).getTime(), time: 6000 },
-    { date: new Date(2022, 7, 3).getTime(), time: 3000 },
-    { date: new Date(2022, 7, 3).getTime(), time: 6000 },
-    { date: new Date(2022, 7, 4).getTime(), time: 3000 },
-    { date: new Date(2022, 7, 4).getTime(), time: 6000 }
   ],
-  work: 3000,
-  break: 600,
+  work: 1500,
+  break: 300,
   current: "work"
 };
 

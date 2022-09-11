@@ -112,7 +112,7 @@ export default class Home extends React.Component {
                 ? true : false
             }
             duration={this.context.user.current === "work" ? this.context.user.work : this.context.user.break}
-            colors={['#004777']}
+            colors={[this.context.user.current === 'work' ? '#004777' : '#cc0000']}
             onComplete={this.onComplete}
             onUpdate={() => this.setState({ passingTime: this.state.passingTime + 1 })}
           >

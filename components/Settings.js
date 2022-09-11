@@ -12,6 +12,7 @@ import {
   FlatList
 } from 'react-native';
 import Account from './Settings/Account';
+import Pomodoro from './Settings/Pomodoro';
 
 export default class Settings extends React.Component {
   constructor(props) {
@@ -106,6 +107,10 @@ export default class Settings extends React.Component {
             } else if (this.state.currentPage === 'Account') {
               return (
                 <Account/>
+              );
+            } else if (this.state.currentPage === 'Pomodoro') {
+              return (
+                <Pomodoro />
               );
             }
           })()}

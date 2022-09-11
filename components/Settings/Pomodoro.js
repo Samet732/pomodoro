@@ -1,29 +1,39 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, TextInput, View, Text, Dimensions, Button } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Button, Dimensions } from 'react-native';
 import { UserContext } from '../../context/user-context';
 
-export default function Account() {
+export default function Pomodoro() {
   const { user, dispatch } = useContext(UserContext);
-  const [nickname, setNickname] = useState(nickname);
+  const [pomodoro, setPomodoro] = useState(user.work / 60);
+  const [breakTime, setBreakTime] = useState(user.break / 60);
 
   const save = () => {
     dispatch({
-      type: 'ACCOUNT_UPDATE',
+      type: 'POMODORO_UPDATE',
       payload: {
-        nickname: nickname
+        work: pomodoro * 60,
+        break: breakTime * 60
       }
     });
 
     alert('Saved');
   };
-
+  
   return (
     <View style={styles.container}>
-      <Text>Nickname</Text>
+      <Text>Pomodoro Time (m)</Text>
       <TextInput
-        defaultValue={user.nickname}
+        defaultValue={pomodoro.toString()}
         style={styles.input}
-        onChangeText={nick => setNickname(nick)}
+        onChangeText={time => setPomodoro(time)}
+        keyboardType="numeric"
+      />
+      <Text>Break Time (m)</Text>
+      <TextInput
+        defaultValue={breakTime.toString()}
+        style={styles.input}
+        onChangeText={time => setBreakTime(time)}
+        keyboardType="numeric"
       />
       <Button
         onPress={save}
